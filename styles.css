@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#clicker {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    height: 60px;
+    font-size: 24px;
+}
+
+#leaderboard {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#leaderboard th,
+#leaderboard td {
+    border: 1px solid black;
+    padding: 10px;
+}
