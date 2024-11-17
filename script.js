@@ -1,54 +1,43 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const clickButton = document.getElementById('clicker');
-    const scoreDisplay = document.getElementById('score');
-    let currentScore = 0;
-    let userID = localStorage.getItem('userID') || generateUserID(); // Генерируем новый ID, если его нет
-    let username = localStorage.getItem('username') || `Игрок ${userID}`;
+// Инициализация
+let currentScore = 0;
+const coin = document.getElementById('coin');
+const scoreDisplay = document.getElementById('score');
+const leadersList = document.getElementById('leaders-list');
+const swapButton = document.getElementById('swap-button');
 
-    // Функция для генерации уникального ID
-    function generateUserID() {
-        return Math.random().toString(36).substring(7); // Уникальный случайный ID
-    }
-
-    // Функция для обновления счета
-    function updateScore() {
-        currentScore++;
-        scoreDisplay.textContent = currentScore;
-        localStorage.setItem('currentScore', currentScore); // Сохраняем текущий счет в localStorage
-    }
-
-    // Загружаем сохраненный счет, если он есть
-    if (localStorage.getItem('currentScore')) {
-        currentScore = parseInt(localStorage.getItem('currentScore'));
-        scoreDisplay.textContent = currentScore;
-    }
-
-    // Обработчик нажатия кнопки
-    clickButton.addEventListener('click', () => {
-        updateScore();
-        saveLeaderboard(userID, username, currentScore);
+// Функции для работы с таблицей лидеров
+function loadLeaders() {
+    const storedLeaders = JSON.parse(localStorage.getItem('leaders')) || [];
+    storedLeaders.sort((a, b) => b.score - a.score);
+    storedLeaders.slice(0, 10).forEach(({name, score}) => {
+        const li = document.createElement('li');
+        li.className = 'leader-item';
+        li.innerHTML = `<span class="leader-name">${name}</span><span class="leader-score">${score}</span>`;
+        leadersList.appendChild(li);
     });
+}
 
-    // Сохранение таблицы лидеров
-    function saveLeaderboard(id, name, score) {
-        const leaderboardTable = document.getElementById('leaderboard');
-        const existingRow = Array.from(leaderboardTable.querySelectorAll('tr')).find(row => row.cells[1].innerText === name);
+function addToLeaders(name, score) {
+    const storedLeaders = JSON.parse(localStorage.getItem('leaders')) || [];
+    storedLeaders.push({name, score});
+    localStorage.setItem('leaders', JSON.stringify(storedLeaders));
+    leadersList.innerHTML = '';
+    loadLeaders();
+}
 
-        if (!existingRow) { // Если строки с таким пользователем еще нет
-            const newRow = leaderboardTable.insertRow(-1);
-            const placeCell = newRow.insertCell(0);
-            const nameCell = newRow.insertCell(1);
-            const scoreCell = newRow.insertCell(2);
+// Обработчики событий
+coin.addEventListener('click', () => {
+    currentScore += 1;
+    scoreDisplay.textContent = currentScore;
+});
 
-            placeCell.innerText = leaderboardTable.rows.length - 1; // Место в таблице
-            nameCell.innerText = name;
-            scoreCell.innerText = score;
-        } else { // Если строка уже существует, просто обновляем очки
-            existingRow.cells[2].innerText = score;
-        }
+swapButton.addEventListener('click', () => {
+    if (confirm('Вы уверены, что хотите SWAP? Вы потеряете все свои NotCoins.')) {
+        currentScore = 0;
+        scoreDisplay.textContent = currentScore;
+        addToLeaders('Player', currentScore);
     }
+});
 
-    // Сохраняем ID пользователя в localStorage
-    localStorage.setItem('userID', userID);
-    localStorage.setItem('username', username);
-});currentSco
+// Загрузить таблицу лидеров при старте приложения
+loadLeaders();
