@@ -1,31 +1,94 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f0f0;
 }
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-#clicker {
-    background-color: #4CAF50;
+header {
+    background-color: #333;
     color: white;
-    border: none;
+    text-align: center;
+    padding: 15px;
+}
+
+main {
+    flex-grow: 1;
+    display: grid;
+    gap: 30px;
+    justify-content: center;
+}
+
+.game-container {
+    display: inline-block;
+    position: relative;
+    width: 300px;
+}
+
+.coin {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-image: url("notcoin.png");
+    background-size: cover;
     cursor: pointer;
-    width: 200px;
-    height: 60px;
-    font-size: 24px;
 }
 
-#leaderboard {
-    width: 100%;
-    border-collapse: collapse;
+.leaders-container {
+    text-align: left;
+    max-width: 400px;
 }
 
-#leaderboard th,
-#leaderboard td {
-    border: 1px solid black;
+.leader-item {
+    list-style-type: none;
+    line-height: 1.6;
+}
+
+.leader-name {
+    color: #444;
+}
+
+.leader-score {
+    float: right;
+    font-weight: bold;
+}
+
+#swap-button {
+    margin-top: 20px;
+    outline: none;
+    appearance: none;
+    width: 120px;
+    heigth: 40px;
+    align-self: center;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: all .25s ease-in-out;
+    transform: scale(1);
+    background: linear-gradient(to bottom, #ffd65e, #febf04);
+    color: black;
+    box-shadow: 0 12px 18px rgba(255,191,4,.35), inset 0 -1px 1px rgba(0,0,0,.05), inset 0 -3px 1px rgba(0,0,0,.1), inset 0 -10px 10px rgba(0,0,0,.1);
+}
+
+#swap-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(245,171,53,.45), inset 0 1px 1px rgba(0,0,0,.075), inset 0 -3px 1px rgba(0,0,0,.1), inset 0 10px 20px rgba(0,0,0,.1)
+}
+
+#swap-button:active {
+    box-shadow: inset 0px 3px 9px rgba(0,0,0,0.125), inset 0 1px 2px rgba(0,0,0,.15);
+    transform: scale(.98);
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
     padding: 10px;
 }
